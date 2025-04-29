@@ -1,0 +1,60 @@
+<!-- <h3>Buscar</h3> -->
+
+<div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="categoriesNav">
+            <ul class="navbar-nav">
+                @for (cat of getCategorias(); track $index) {
+                    <li (click)="setCategoria(cat.id)" class="nav-item">
+                        <a [class]="{'selected': categoria == cat.id}" class="nav-link">{{cat.nombre}}</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="row">
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <div class="collapse navbar-collapse" id="manufacturersNav">
+            <ul class="navbar-nav">
+                @for (fab of getFabricantes(); track $index) {
+                    <li (click)="setFabricante(fab.id)" class="nav-item">
+                        <a [class]="{'selected': fabricante == fab.id}" class="nav-link">{{fab.nombre}}</a>
+                    </li>
+                }
+            </ul>
+        </div>
+    </nav>
+</div>
+
+<div class="row">
+    <div class="input-group mb-3">
+        <input [(ngModel)]="pattern" type="text" class="form-control" placeholder="Buscar por nombre"
+                aria-label="Buscar por nombre" aria-describedby="basic-addon2">
+        <div class="input-group-append">
+            <button class="btn btn-primary" type="button">
+                Buscar
+            </button>
+            <button (click)="clearFilters()" class="btn btn-warning" type="button">
+                Borrar filtros
+            </button>
+        </div>
+    </div>
+</div>
+
+<ng-container>
+    <div class="row">
+        <h5 #hola>Resultados de búsqueda</h5>
+    </div>
+    <div class="row">
+        <div class="row row-cols-md-5">
+            @for (articulo of getArticulos() 
+                                | filterByName:getPattern()
+                                | filtroCat:getCategoria()
+                                | filtroFabName:getFabricante(); track $index) {
+                <app-article-card [articulo]="articulo"></app-article-card>
+            }
+        </div>
+    </div>
+</ng-container>
